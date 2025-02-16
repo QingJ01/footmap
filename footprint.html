@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #f6f9fc;
+      overflow: hidden;
+    }
+
+    .title {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      color: #2c3e50;
+      font-family: "楷体", KaiTi, serif;
+      letter-spacing: 3px;
+      z-index: 1000;
+    }
+
+    #main {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="title">山河为纸履作笔，写满未装订的诗集</div>
+  <div id="main"></div>
+  <script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('main'));
+    myChart.showLoading();
+
+    $.get('china.json', function (geoJson) {
+      myChart.hideLoading();
+      echarts.registerMap('china', geoJson);
+
+      const option = {
+        backgroundColor: '#f6f9fc',
+        geo: {
+          name: '旅行足迹',
+          type: 'map',
+          map: 'china',
+          selectedMode: 'multiple',
+          zoom: 1.2,
+          center: [105, 36],
+          roam: false,
+          animation: false,
+          itemStyle: {
+            normal: {
+              borderWidth: 1.2,
+              borderColor: '#b8c7ce',
+              areaColor: '#f7f9fb'
+            }
+          },
+          emphasis: {
+            itemStyle: {
+              areaColor: '#e6f0f7'
+            }
+          }
+        },
+        series: [{
+          name: '标记点',
+          type: 'scatter',
+          coordinateSystem: 'geo',
+          data: [
+            {
+              name: '宝鸡',
+              value: [107.90017, 34.37524],
+              symbolSize: 12,
+              itemStyle: {
+                color: '#ff9999',
+                borderColor: '#fff',
+                borderWidth: 2,
+                shadowColor: 'rgba(255, 153, 153, 0.5)',
+                shadowBlur: 15
+              }
+            },
+            {
+              name: '西安',
+              value: [108.94866, 34.22245],
+              symbolSize: 12,
+              itemStyle: {
+                color: '#ff9999',
+                borderColor: '#fff',
+                borderWidth: 2,
+                shadowColor: 'rgba(255, 153, 153, 0.5)',
+                shadowBlur: 15
+              }
+            },
+            { name: '北京', value: [116.407387, 39.904179] },
+            { name: '杭州', value: [120.153576, 30.287459] },
+            { name: '银川', value: [106.27817, 38.46637] },
+            { name: '天水', value: [105.72499, 34.57852] },
+            { name: '成都', value: [104.04303, 30.64235] },
+            { name: '中卫', value: [105.18957, 37.5193] },
+            { name: '长沙', value: [112.93133, 28.2351] },
+            { name: '吴忠', value: [106.199402, 37.986173] },
+            { name: '兰州', value: [103.823557, 36.058039] },
+            { name: '洛阳', value: [112.46902, 34.68364] },
+            { name: '敦煌', value: [94.66159, 40.14211] },
+            { name: '陇南', value: [104.929379, 33.388598] },
+            { name: '汉中', value: [107.028621, 33.077668] },
+            { name: '延安', value: [110.17196, 36.04732] },
+            { name: '咸阳', value: [108.705117, 34.333439] },
+            { name: '重庆', value: [106.5512, 29.5657] },
+            { name: '石嘴山', value: [106.376169, 39.01333] },
+            { name: '固原', value: [106.28524, 36.01585] },
+            { name: '定西', value: [104.626294, 35.579578] },
+            { name: '深圳', value: [114.057895, 22.543099] }
+          ],
+          symbolSize: 8,
+          label: {
+            formatter: '{b}',
+            show: false,
+            position: 'right',
+            color: '#34495e',
+            fontSize: 13,
+            fontWeight: 500,
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            padding: [4, 8],
+            borderRadius: 4,
+            distance: 6
+          },
+          emphasis: {
+            label: {
+              show: true
+            }
+          },
+          itemStyle: {
+            color: '#3498db',
+            borderColor: '#fff',
+            borderWidth: 2,
+            shadowColor: 'rgba(52, 152, 219, 0.3)',
+            shadowBlur: 15
+          }
+        }]
+      };
+
+      myChart.setOption(option);
+    });
+
+    window.addEventListener('resize', function () {
+      myChart.resize();
+    });
+  </script>
+</body>
+
+</html>
